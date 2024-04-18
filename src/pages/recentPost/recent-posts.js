@@ -1,4 +1,4 @@
-const recentPostsData = [
+const recentPostsFeedSummaryData = [
     {
         image: "../../assets/dumplins.jpg",
         text: "Keep cooking simple"
@@ -91,7 +91,7 @@ function generateMainFeed() {
 
 function generateRecentPosts () {
     const ul = document.querySelector(".recent-posts")
-    recentPostsData.forEach((recentPost) => {
+    recentPostsFeedSummaryData.forEach((recentPost) => {
         const li = document.createElement("li")
         li.classList.add("recent-feed")
         li.classList.add("demarcation")
@@ -111,6 +111,55 @@ function generateRecentPosts () {
     })
 }
 
+function generateSubscribeForm () {
+    const div = document.querySelector("#popup")
+    
+    const image = document.createElement("img")
+    image.src = "../../assets/subscribeImage.jpg"
+    image.classList.add("subscription-form-image")
+    div.appendChild(image)
+
+    const textSection = document.createElement("div")
+    const h1 = document.createElement("h1")
+    const title = document.createTextNode("KEEP IN TOUCH")
+    h1.appendChild(title)
+    textSection.appendChild(h1)
+
+    const p1 = document.createElement("p")
+    const p1Text = document.createTextNode("Never miss a post by subscribing to our weekly newsletter and hearing about our special offers ahead of the crowd")
+    p1.appendChild(p1Text)
+    textSection.appendChild(p1)
+
+    const p2 = document.createElement("p")
+    const p2Text = document.createTextNode("Don't worry you can unsubscribe at any time :)")
+    p2.appendChild(p2Text)
+    textSection.appendChild(p2)
+
+    const emailField1 = document.createElement("input")
+    emailField1.type = 'email'
+    emailField1.placeholder = 'hello@email.com'
+    emailField1.classList.add("large-screen")
+    textSection.appendChild(emailField1)
+    const emailField2 = document.createElement("input")
+    emailField2.type = 'email'
+    emailField2.placeholder = 'email address'
+    emailField2.classList.add("small-screen")
+    textSection.appendChild(emailField2)
+
+    textSection.classList.add("subscribe-form-text")
+
+    div.appendChild(textSection)
+    console.log(div)
+}
+
+function toggle () {
+    var blur = document.querySelector('.blur')
+    blur.classList.toggle('active')
+    var popup = document.getElementById('popup')
+    popup.classList.toggle('active')
+}
+
 window.addEventListener("load", generateMainFeed)
 generateRecentPosts()
+generateSubscribeForm()
 console.log("hello")

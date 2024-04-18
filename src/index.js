@@ -34,32 +34,7 @@ const homePageMainFeedData = [
     }
 ]
 
-const recentPostFeedData = [
-    {
-        image: "../../assets/heroSection.jpg",
-        title: "Finding simplicity in life",
-        date: "July 19, 2019 | 3 comments",
-        description: "Life can get complicated really quickly, but it doesn't have to be! There are many ways to simplify your life, a few of which we've explored in the past. This week we're taking a bit of a approach though, in how you can find simplicity in the life you already living."
-    },
-    {
-        image: "../../assets/dumplins.jpg",
-        title: "Keep cooking simple",
-        date: "July 19, 2019 | 3 comments",
-        description: "Food is a very important part of everyone's life. If you want to be healthy, you have to eat healthy. `One of the easiest ways to do that is to keep your cooking nice and simple."
-    },
-    {
-        image: "../../assets/simple work station.jpg",
-        title: "Simplicity and work",
-        date: "July 12, 2019 | 3 comments",
-        description: "Work is often a major source of stress. People get frustrated, it ruins their relationship with others and it leads to burnout. By keeping your work life as simple as possible, it will help balance everything out."
-    },
-    {
-        image: "../../assets/simple decoration.jpg",
-        title: "Simple decoration",
-        date: "July 3, 2019 | 3 comments",
-        description: " A home isn't a home until you've decorated a little. People either don't decorate, or they go overboard and it doesn't have the impact they were hoping for. Staying simple will help draw the eye where you want it to and make things pop like never before."
-    }
-]
+const navLinks = document.querySelectorAll(".nav ul li a")
 
 function generateMainFeed() {
     const ul = document.querySelector(".main-posts")
@@ -128,9 +103,81 @@ function generateRecentPosts () {
         li.appendChild(imageCaption)
         
         ul.appendChild(li)
+        console.log(ul)
     })
 }
 
+function generateSubscribeForm () {
+    const div = document.querySelector("#popup")
+    
+    const image = document.createElement("img")
+    image.src = "../../assets/subscribeImage.jpg"
+    image.classList.add("subscription-form-image")
+    div.appendChild(image)
+
+    const textSection = document.createElement("div")
+    const h1 = document.createElement("h1")
+    const title = document.createTextNode("KEEP IN TOUCH")
+    h1.appendChild(title)
+    textSection.appendChild(h1)
+
+    const p1 = document.createElement("p")
+    const p1Text = document.createTextNode("Never miss a post by subscribing to our weekly newsletter and hearing about our special offers ahead of the crowd")
+    p1.appendChild(p1Text)
+    textSection.appendChild(p1)
+
+    const p2 = document.createElement("p")
+    const p2Text = document.createTextNode("Don't worry you can unsubscribe at any time :)")
+    p2.appendChild(p2Text)
+    textSection.appendChild(p2)
+
+    const sendForm = document.createElement("div")
+    sendForm.classList.add("send-form")
+
+    const emailField1 = document.createElement("input")
+    emailField1.type = 'email'
+    emailField1.placeholder = 'hello@email.com'
+    emailField1.classList.add("large-screen")
+    sendForm.appendChild(emailField1)
+    const emailField2 = document.createElement("input")
+    emailField2.type = 'email'
+    emailField2.placeholder = 'email address'
+    emailField2.classList.add("small-screen")
+    sendForm.appendChild(emailField2)
+
+    const sendButton = document.createElement("button")
+    const sendIcon = document.createElement("img")
+    sendIcon.src = "../../assets/paper-plane-2563.svg"
+    sendButton.appendChild(sendIcon)
+    sendButton.onclick = toggle
+    sendForm.appendChild(sendButton)
+
+    textSection.appendChild(sendForm)
+    textSection.classList.add("subscribe-form-text")
+
+    div.appendChild(textSection)
+    console.log(div)
+}
+
+function toggle () {
+    var blur = document.querySelector('.blur')
+    blur.classList.toggle('active')
+    var popup = document.getElementById('popup')
+    popup.classList.toggle('active')
+}
+
+function handleNavClick (event) {
+    navLinks.forEach(item => {
+        item.classList.remove("current")
+    })
+    event.target.classList.add("current")
+}
+
+navLinks.forEach(item => {
+    item.addEventListener('click', handleNavClick)
+})
+
 window.addEventListener("load", generateMainFeed)
 generateRecentPosts()
+generateSubscribeForm()
 console.log("hello")

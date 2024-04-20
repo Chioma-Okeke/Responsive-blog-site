@@ -1,162 +1,65 @@
-const recentPostsData = [
-    {
-        image: "../../assets/dumplins.jpg",
-        text: "Keep cooking simple"
-    },
-    {
-        image: "../../assets/simple work station.jpg",
-        text: "Simplicity and work"
-    },
-    {
-        image: "../../assets/simple decoration.jpg",
-        text: "Simple decoration"
-    }
-]
-
-const homePageMainFeedData = [
-    {
-        image: "../../assets/dumplins.jpg",
-        title: "Keep cooking simple",
-        date: "July 19, 2019 | 3 comments",
-        description: "Food is a very important part of everyone's life. If you want to be healthy, you have to eat healthy. `One of the easiest ways to do that is to keep your cooking nice and simple."
-    },
-    {
-        image: "../../assets/simple work station.jpg",
-        title: "Simplicity and work",
-        date: "July 19, 2019 | 3 comments",
-        description: "Work is often a major source of stress. People get frustrated, it ruins their relationship with others and it leads to burnout. By keeping your work life as simple as possible, it will help balance everything out."
-    },
-    {
-        image: "../../assets/simple decoration.jpg",
-        title: "Simple decoration",
-        date: "July 19, 2019 | 3 comments",
-        description: " A home isn't a home until you've decorated a little. People either don't decorate, or they go overboard and it doesn't have the impact they were hoping for. Staying simple will help draw the eye where you want it to and make things pop like never before."
-    }
-]
-
 const navLinks = document.querySelectorAll(".nav ul li a")
+const validationMessage = document.createElement("p")
+const message = document.createTextNode("Field cannot be submitted blank")
+validationMessage.appendChild(message)
+validationMessage.classList.add("validation-message")
 
-function generateMainFeed() {
-    const ul = document.querySelector(".main-posts")
+async function fetchData () {
+    try {
+        const response = await fetch('../../data.json')
+        const data = await response.json()
+        const {homePageMainFeedData, recentPostsData} = data
 
-    homePageMainFeedData.forEach((feedData) => {
-        const li = document.createElement("li")
-        li.classList.add("post")
+        const mainFeedList = document.querySelector(".main-posts")
+        homePageMainFeedData.forEach(post => {
+            const listItem = document.createElement("li")
+            listItem.classList.add("post")
+            listItem.innerHTML = `
+                <div class="post-image-section">
+                    <img src="${post.image}" class="post-image">
+                    <p class="date-font">${post.date}</p>
+                </div>
+                <div class="post-description-section">
+                    <h4 class="main-feed-subheading margin-zero">${post.title}</h4>
+                    <p class="post-description">${post.description}</p>
+                    <p class="moreInfo-font">CONTINUE READING</p>
+                </div>
+            `
+            mainFeedList.appendChild(listItem)
+            console.log(mainFeedList, "mainfeedList")
+        })
 
-        const div1 = document.createElement("div")
-        div1.classList.add("post-image-section")
-        
-        const img = document.createElement("img")
-        img.src = feedData.image
-        img.classList.add("post-image")
-        div1.append(img)
+        const recentPostList = document.querySelector(".recent-posts")
+        recentPostsData.forEach(post => {
+            const listItem = document.createElement("li")
+            listItem.classList.add("recent-feed")
+            listItem.innerHTML = `
+                <div class="recent-post-image" style="background-image: url('${post.image}');"></div>
+                <p class="about-profile" style="text-align: left;">${post.text}</p>
+            `
+            recentPostList.appendChild(listItem)
+            console.log(listItem, "recentPosts")
+        })
 
-        const p = document.createElement("p")
-        const date = document.createTextNode(feedData.date)
-        p.classList.add("date-font")
-        p.appendChild(date)
-        div1.appendChild(p)
+        const subscriptionForm = document.querySelector("#popup")
+        subscriptionForm.innerHTML = `
+            <img src="../../assets/close-x.svg" class="close-icon" onclick="toggle()">
+            <img src="../../assets/subscribeImage.jpg" class="subscription-form-image">
+            <div class="subscribe-form-text">
+                <h1>KEEP IN TOUCH</h1>
+                <p>Never miss a post by subscribing to our weekly newsletter and hearing about our special offers ahead of the crowd</p>
+                <p>Don't worry you can unsubscribe at any time :)</p>
+                <div class="send-form">
+                    <input type="email" placeholder="hello@email.com" class="large-screen">
+                    <input type="email" placeholder="email address" class="small-screen">
+                    <button><img src="../../assets/paper-plane-2563.svg"></button>
+                </div>
+                <p class="validation-message">Field cannot be submitted blank</p>
+            </div>
+        `
+    } catch (error) {
 
-        li.appendChild(div1)
-
-        const div2 = document.createElement("div")
-        div2.classList.add("post-description-section")
-        const h4 = document.createElement("h4")
-        h4.classList.add("main-feed-subheading")
-        h4.classList.add("margin-zero")
-        const title = document.createTextNode(feedData.title)
-        h4.appendChild(title)
-        div2.appendChild(h4)
-
-        const postDescription = document.createElement("p")
-        const description = document.createTextNode(feedData.description)
-        postDescription.classList.add("post-description")
-        postDescription.appendChild(description)
-        div2.appendChild(postDescription)
-
-        const continueReadig = document.createElement("p")
-        const moreInfo = document.createTextNode("CONTINUE READING")
-        continueReadig.classList.add("moreInfo-font")
-        continueReadig.appendChild(moreInfo)
-        div2.appendChild(continueReadig)
-
-        li.appendChild(div2)
-        ul.appendChild(li)
-    })
-}
-
-function generateRecentPosts () {
-    const ul = document.querySelector(".recent-posts")
-    recentPostsData.forEach((recentPost) => {
-        const li = document.createElement("li")
-        li.classList.add("recent-feed")
-        const image = document.createElement("div")
-        image.style.backgroundImage = `url("${recentPost.image}")`
-        image.classList.add("recent-post-image")
-        li.appendChild(image)
-
-        const imageCaption = document.createElement("p")
-        const caption = document.createTextNode(recentPost.text)
-        imageCaption.style.textAlign = "left"
-        imageCaption.classList.add("about-profile")
-        imageCaption.appendChild(caption)
-        li.appendChild(imageCaption)
-        
-        ul.appendChild(li)
-        console.log(ul)
-    })
-}
-
-function generateSubscribeForm () {
-    const div = document.querySelector("#popup")
-    
-    const image = document.createElement("img")
-    image.src = "../../assets/subscribeImage.jpg"
-    image.classList.add("subscription-form-image")
-    div.appendChild(image)
-
-    const textSection = document.createElement("div")
-    const h1 = document.createElement("h1")
-    const title = document.createTextNode("KEEP IN TOUCH")
-    h1.appendChild(title)
-    textSection.appendChild(h1)
-
-    const p1 = document.createElement("p")
-    const p1Text = document.createTextNode("Never miss a post by subscribing to our weekly newsletter and hearing about our special offers ahead of the crowd")
-    p1.appendChild(p1Text)
-    textSection.appendChild(p1)
-
-    const p2 = document.createElement("p")
-    const p2Text = document.createTextNode("Don't worry you can unsubscribe at any time :)")
-    p2.appendChild(p2Text)
-    textSection.appendChild(p2)
-
-    const sendForm = document.createElement("div")
-    sendForm.classList.add("send-form")
-
-    const emailField1 = document.createElement("input")
-    emailField1.type = 'email'
-    emailField1.placeholder = 'hello@email.com'
-    emailField1.classList.add("large-screen")
-    sendForm.appendChild(emailField1)
-    const emailField2 = document.createElement("input")
-    emailField2.type = 'email'
-    emailField2.placeholder = 'email address'
-    emailField2.classList.add("small-screen")
-    sendForm.appendChild(emailField2)
-
-    const sendButton = document.createElement("button")
-    const sendIcon = document.createElement("img")
-    sendIcon.src = "../../assets/paper-plane-2563.svg"
-    sendButton.appendChild(sendIcon)
-    sendButton.onclick = toggle
-    sendForm.appendChild(sendButton)
-
-    textSection.appendChild(sendForm)
-    textSection.classList.add("subscribe-form-text")
-
-    div.appendChild(textSection)
-    console.log(div)
+    }
 }
 
 function toggle () {
@@ -164,6 +67,24 @@ function toggle () {
     blur.classList.toggle('active')
     var popup = document.getElementById('popup')
     popup.classList.toggle('active')
+    const emailFields = document.querySelectorAll(".send-form input")
+    emailFields.forEach(item => {
+        item.value = ""
+    })
+    validationMessage.style.visibility = "hiddem"
+}
+
+function submitForm() {
+    const emailInputs = document.querySelectorAll(".send-form input")
+    console.log(emailInputs)
+    emailInputs.forEach(emailInput => {
+        if (emailInput.value = "") {
+            validationMessage.style.visibility = "visible"
+        } else {
+            toggle()
+            alert("You have successfully subscribed")
+        }
+    })
 }
 
 function handleNavClick (event) {
@@ -177,7 +98,5 @@ navLinks.forEach(item => {
     item.addEventListener('click', handleNavClick)
 })
 
-window.addEventListener("load", generateMainFeed)
-generateRecentPosts()
-generateSubscribeForm()
+document.addEventListener("DOMContentLoaded", fetchData)
 console.log("hello")

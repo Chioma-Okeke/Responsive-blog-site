@@ -1,16 +1,59 @@
-const navLinks = document.querySelectorAll(".nav ul li a")
-const validationMessage = document.createElement("p")
-const message = document.createTextNode("Field cannot be submitted blank")
-validationMessage.appendChild(message)
-validationMessage.classList.add("validation-message")
+const navLinks = document.querySelectorAll(".nav .navItem")
+const pageContext = document.body.getAttribute('data-page')
+const popup = document.getElementById('popup')
+const blurred = document.querySelector('.blur')
+const confrimationPopup = document.getElementById('confirmation')
 
-async function fetchData () {
-    try {
-        const response = await fetch('../../data.json')
-        const data = await response.json()
-        const {homePageMainFeedData, recentPostsData} = data
+function sharedFunction (data) {
+    const {recentPostsData} = data
+    const recentPostList = document.querySelector(".recent-posts")
+        recentPostsData.forEach(post => {
+            const listItem = document.createElement("li")
+            listItem.classList.add("recent-feed")
+            if (pageContext === "recentPost") {
+                listItem.classList.add("demarcation")
+            }
+            listItem.innerHTML = `
+                <div class="recent-post-image" style="background-image: url('${post.image}');"></div>
+                <p class="about-profile" style="text-align: left;">${post.text}</p>
+            `
+            recentPostList.appendChild(listItem)
+            console.log(listItem, "recentPosts")
+        })
+}
 
-        const mainFeedList = document.querySelector(".main-posts")
+function subcriptionConfrimation() {
+    const confrimationPopup = document.querySelector("#confirmation")
+    confrimationPopup.innerHTML = `
+        <img src="../../assets/confirmIcon.svg">
+        <h4>Thank you for subscribing. You will receive an email shortly.</h4>
+    `
+    console.log(confrimationPopup)
+}
+
+function subscriptionForm () {
+    const subscriptionForm = document.querySelector("#popup")
+        subscriptionForm.innerHTML = `
+            <img src="../../assets/close-x.svg" class="close-icon" onclick="toggle()">
+            <img src="../../assets/subscribeImage.jpg" class="subscription-form-image">
+            <div class="subscribe-form-text">
+                <h1>KEEP IN TOUCH</h1>
+                <p>Never miss a post by subscribing to our weekly newsletter and hearing about our special offers ahead of the crowd</p>
+                <p>Don't worry you can unsubscribe at any time :)</p>
+                <div class="send-form">
+                    <input type="email" spellcheck="false" placeholder="hello@email.com" class="large-screen" onkeyup="validateEmail()">
+                    <input type="email" spellcheck="false" placeholder="email address" class="small-screen" onkeyup="validateEmail()">
+                    <button onclick="submitForm()"><img src="../../assets/paper-plane-2563.svg"></button>
+                </div>
+                <span class="validation-message"></span>
+            </div>
+        `
+}
+
+function displayHomePage (data) {
+    console.log("working")
+    const {homePageMainFeedData} = data
+    const mainFeedList = document.querySelector(".main-posts")
         homePageMainFeedData.forEach(post => {
             const listItem = document.createElement("li")
             listItem.classList.add("post")
@@ -28,75 +71,112 @@ async function fetchData () {
             mainFeedList.appendChild(listItem)
             console.log(mainFeedList, "mainfeedList")
         })
+}
 
-        const recentPostList = document.querySelector(".recent-posts")
-        recentPostsData.forEach(post => {
-            const listItem = document.createElement("li")
-            listItem.classList.add("recent-feed")
-            listItem.innerHTML = `
-                <div class="recent-post-image" style="background-image: url('${post.image}');"></div>
-                <p class="about-profile" style="text-align: left;">${post.text}</p>
-            `
-            recentPostList.appendChild(listItem)
-            console.log(listItem, "recentPosts")
-        })
+function displayRecentPage (data) {
+    const {recentPostFeedData} = data
 
-        const subscriptionForm = document.querySelector("#popup")
-        subscriptionForm.innerHTML = `
-            <img src="../../assets/close-x.svg" class="close-icon" onclick="toggle()">
-            <img src="../../assets/subscribeImage.jpg" class="subscription-form-image">
-            <div class="subscribe-form-text">
-                <h1>KEEP IN TOUCH</h1>
-                <p>Never miss a post by subscribing to our weekly newsletter and hearing about our special offers ahead of the crowd</p>
-                <p>Don't worry you can unsubscribe at any time :)</p>
-                <div class="send-form">
-                    <input type="email" placeholder="hello@email.com" class="large-screen">
-                    <input type="email" placeholder="email address" class="small-screen">
-                    <button><img src="../../assets/paper-plane-2563.svg"></button>
-                </div>
-                <p class="validation-message">Field cannot be submitted blank</p>
-            </div>
+    const recentFeedList = document.querySelector(".main-posts")
+    recentPostFeedData.forEach((feedData) => {
+        const listItem = document.createElement("li")
+        listItem.classList.add("post")
+        listItem.innerHTML = `
+        <div class="post-image-section">
+            <img src="${feedData.image}" class="post-image">
+            <p class="date-font">${feedData.date}</p>
+        </div>
+        <div class="post-description-section">
+            <h4 class="main-feed-subheading margin-zero">${feedData.title}</h4>
+            <p class="post-description">${feedData.description}</p>
+            <p class="moreInfo-font">CONTINUE READING</p>
+        </div>
         `
+        recentFeedList.appendChild(listItem)
+        console.log(recentFeedList)
+    })
+}
+
+async function fetchData () {
+    try {
+        const response = await fetch('../../data.json')
+        const data = await response.json()
+
+        handlePage(data)
     } catch (error) {
 
     }
 }
 
+function handlePage(data) {
+    sharedFunction(data)
+    subscriptionForm()
+    subcriptionConfrimation()
+
+    if (pageContext === "home") {
+        console.log("changed")
+        displayHomePage(data)
+    } else if (pageContext === "recentPost") {
+        console.log("in recent")
+        displayRecentPage(data)
+    } else {
+        console.log("Unknown page context")
+    }
+}
+
 function toggle () {
-    var blur = document.querySelector('.blur')
-    blur.classList.toggle('active')
-    var popup = document.getElementById('popup')
+    blurred.classList.toggle('active')
     popup.classList.toggle('active')
     const emailFields = document.querySelectorAll(".send-form input")
     emailFields.forEach(item => {
         item.value = ""
+        item.style.borderColor = "#c5c2c2"
+        item.style.boxShadow = "none"
     })
-    validationMessage.style.visibility = "hiddem"
+
+}
+
+function validateEmail () {
+    const validationMessage = document.querySelector(".validation-message")
+    const emailFields = document.querySelectorAll(".send-form input")
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    emailFields.forEach(item => {
+        console.log(item.value)
+        if (!emailPattern.test(item.value)) {
+            validationMessage.innerHTML = "Please enter a valid email"
+            item.style.borderColor = "red"
+            item.style.boxShadow = "0px 0px 7px red"
+            return false
+        } 
+        validationMessage.innerHTML = ""
+        item.style.borderColor = "green"
+        item.style.boxShadow = "0px 0px 7px #2b5933"
+        return true
+        
+        
+    })
 }
 
 function submitForm() {
-    const emailInputs = document.querySelectorAll(".send-form input")
-    console.log(emailInputs)
-    emailInputs.forEach(emailInput => {
-        if (emailInput.value = "") {
-            validationMessage.style.visibility = "visible"
-        } else {
-            toggle()
-            alert("You have successfully subscribed")
+    popup.classList.toggle('active')
+    confrimationPopup.classList.toggle('active')
+    setTimeout(() => {
+        blurred.classList.toggle('active')
+        confrimationPopup.classList.toggle('active')
+        }, 1300);
+}
+
+function setActiveLink () {
+    const currentPath = window.location.pathname
+    navLinks.forEach(link => {
+        link.classList.remove("current")
+
+        if(link.getAttribute('href') === currentPath) {
+            link.classList.add("current")
         }
     })
 }
 
-function handleNavClick (event) {
-    navLinks.forEach(item => {
-        item.classList.remove("current")
-    })
-    event.target.classList.add("current")
-}
-
-navLinks.forEach(item => {
-    item.addEventListener('click', handleNavClick)
+document.addEventListener("DOMContentLoaded", () => {
+    fetchData()
+    setActiveLink()
 })
-
-document.addEventListener("DOMContentLoaded", fetchData)
-console.log("hello")

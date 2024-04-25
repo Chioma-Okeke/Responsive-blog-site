@@ -1,4 +1,4 @@
-/* repeated rules */
+/* repeatedly used rules */
 .text-decoration-none {
     text-decoration: none;
 }
@@ -68,11 +68,9 @@ header{
 }
 
 .container {
-    /* position: relative; */
     margin: 0 auto;
     max-width: 1005px;
     width: 90%;
-    /* transition: 0.5s; */
 }
 
 .wrapper {
@@ -385,7 +383,11 @@ hr {
 .close-icon {
     position: inherit;
     left: 100%;
-    top: 0;
+    top: -30px;
+    background: white;
+    border-radius: 50%;
+    padding: .25em;
+    box-shadow: 0px 0px 5px #707070;
 }
 
 #popup.active {
@@ -425,9 +427,6 @@ hr {
     outline: none;
 }
 
-.subscribe-form-text .large-screen{ display: inline-block;}
-.subscribe-form-text .small-screen{ display: none;}
-
 .send-form {
     display: flex;
     align-items: center;
@@ -446,7 +445,6 @@ hr {
     transition: 1s;
     box-shadow: 0px 0px 7px #2b5933;
 }
-
 .validation-message {
     margin: 0 1em;
     font-size: small;
@@ -454,6 +452,7 @@ hr {
     font-family: "Lora", sans-serif;
 }
 
+/* subscription confirmation */
 #confirmation {
     position: fixed;
     left: 50%;
@@ -484,6 +483,24 @@ hr {
     transition: 0.5s;
 }
 
+#toast-error {
+    position: absolute;
+    top: 5%;
+    left: -100px;
+    text-align: center;
+    padding: 0 1em;
+    background-color: rgb(230, 45, 45);
+    color: white;
+    box-shadow: 0px 2px 6px rgb(187, 0, 0);
+    opacity: 0;
+    transition: transform 1s ease, opacity 1s ease;
+}
+
+#toast-error.show-error {
+    transform: translateX(100px);
+    opacity: 1;
+}
+
 @media (max-width: 1002px) {
     #popup {
         flex-direction: column;
@@ -499,7 +516,7 @@ hr {
     }
 }
 
-@media (max-width: 422px) {
+@media (max-width: 560px) {
     #popup {
         width: 70%;
     }
@@ -525,9 +542,12 @@ hr {
     .subscribe-form-text input {
         padding: .5em;
     }
+}
 
-    .subscribe-form-text .large-screen{ display: none;}
-    .subscribe-form-text .small-screen{ display: inline-block;}
+@media (max-width: 400px) {
+    #toast-error h4 {
+        font-size: .7rem;
+    }
 }
 
 /* footer secion  */

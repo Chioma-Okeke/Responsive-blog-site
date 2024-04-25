@@ -3,6 +3,7 @@ const pageContext = document.body.getAttribute('data-page')
 const popup = document.getElementById('popup')
 const blurred = document.querySelector('.blur')
 const confrimationPopup = document.getElementById('confirmation')
+const toastError = document.querySelector("#toast-error")
 
 function sharedFunction (data) {
     const {recentPostsData} = data
@@ -31,6 +32,12 @@ function subcriptionConfrimation() {
     console.log(confrimationPopup)
 }
 
+function showToastError() {
+    toastError.innerHTML = `
+        <h4>Enter a valid email address</h4?
+    `
+}
+
 function subscriptionForm () {
     const subscriptionForm = document.querySelector("#popup")
         subscriptionForm.innerHTML = `
@@ -41,8 +48,7 @@ function subscriptionForm () {
                 <p>Never miss a post by subscribing to our weekly newsletter and hearing about our special offers ahead of the crowd</p>
                 <p>Don't worry you can unsubscribe at any time :)</p>
                 <div class="send-form">
-                    <input type="email" spellcheck="false" placeholder="hello@email.com" class="large-screen" onkeyup="validateEmail()">
-                    <input type="email" spellcheck="false" placeholder="email address" class="small-screen" onkeyup="validateEmail()">
+                    <input type="email" spellcheck="false" placeholder="email address" onkeyup="validateEmail()">
                     <button onclick="submitForm()"><img src="../../assets/paper-plane-2563.svg"></button>
                 </div>
                 <span class="validation-message"></span>
@@ -111,6 +117,7 @@ function handlePage(data) {
     sharedFunction(data)
     subscriptionForm()
     subcriptionConfrimation()
+    showToastError()
 
     if (pageContext === "home") {
         console.log("changed")
@@ -132,6 +139,8 @@ function toggle () {
         item.style.borderColor = "#c5c2c2"
         item.style.boxShadow = "none"
     })
+    const validationMessage = document.querySelector(".validation-message")
+    validationMessage.innerHTML = ""
 
 }
 
@@ -157,12 +166,24 @@ function validateEmail () {
 }
 
 function submitForm() {
-    popup.classList.toggle('active')
-    confrimationPopup.classList.toggle('active')
-    setTimeout(() => {
-        blurred.classList.toggle('active')
-        confrimationPopup.classList.toggle('active')
-        }, 1300);
+    const emailFields = document.querySelectorAll(".send-form input")
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    emailFields.forEach(item => {
+        if (emailPattern.test(item.value)) {
+            popup.classList.toggle('active')
+            confrimationPopup.classList.toggle('active')
+            setTimeout(() => {
+                blurred.classList.toggle('active')
+                confrimationPopup.classList.toggle('active')
+            }, 1300);
+            return false
+        }
+        console.log(toastError, "error")
+        toastError.classList.add('show-error')
+        setTimeout(() => {
+            toastError.classList.remove("show-error") 
+        }, 2000);
+    })
 }
 
 function setActiveLink () {

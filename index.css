@@ -484,7 +484,7 @@ hr {
 }
 
 #toast-error {
-    position: absolute;
+    position: fixed;
     top: 5%;
     left: -100px;
     text-align: center;

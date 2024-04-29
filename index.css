@@ -234,7 +234,7 @@ hr {
 }
 
 .about-image {
-    background-image: url("./assets/aboutMe.jpg");
+    background-image: url("/images/aboutMe.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 10% 40%;

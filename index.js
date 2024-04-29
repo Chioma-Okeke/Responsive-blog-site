@@ -19,17 +19,15 @@ function sharedFunction (data) {
                 <p class="about-profile" style="text-align: left;">${post.text}</p>
             `
             recentPostList.appendChild(listItem)
-            console.log(listItem, "recentPosts")
         })
 }
 
 function subcriptionConfrimation() {
     const confrimationPopup = document.querySelector("#confirmation")
     confrimationPopup.innerHTML = `
-        <img src="../../assets/confirmIcon.svg">
+        <img src="/images/confirmIcon.svg">
         <h4>Thank you for subscribing. You will receive an email shortly.</h4>
     `
-    console.log(confrimationPopup)
 }
 
 function showToastError() {
@@ -41,15 +39,15 @@ function showToastError() {
 function subscriptionForm () {
     const subscriptionForm = document.querySelector("#popup")
         subscriptionForm.innerHTML = `
-            <img src="../../assets/close-x.svg" class="close-icon" onclick="toggle()">
-            <img src="../../assets/subscribeImage.jpg" class="subscription-form-image">
+            <img src="/images/close-x.svg" class="close-icon" onclick="toggle()">
+            <img src="/images/subscribeImage.jpg" class="subscription-form-image">
             <div class="subscribe-form-text">
                 <h1>KEEP IN TOUCH</h1>
                 <p>Never miss a post by subscribing to our weekly newsletter and hearing about our special offers ahead of the crowd</p>
                 <p>Don't worry you can unsubscribe at any time :)</p>
                 <div class="send-form">
                     <input type="email" spellcheck="false" placeholder="email address" onkeyup="validateEmail()">
-                    <button onclick="submitForm()"><img src="../../assets/paper-plane-2563.svg"></button>
+                    <button onclick="submitForm()"><img src="/images/paper-plane-2563.svg"></button>
                 </div>
                 <span class="validation-message"></span>
             </div>
@@ -57,7 +55,6 @@ function subscriptionForm () {
 }
 
 function displayHomePage (data) {
-    console.log("working")
     const {homePageMainFeedData} = data
     const mainFeedList = document.querySelector(".main-posts")
         homePageMainFeedData.forEach(post => {
@@ -75,7 +72,6 @@ function displayHomePage (data) {
                 </div>
             `
             mainFeedList.appendChild(listItem)
-            console.log(mainFeedList, "mainfeedList")
         })
 }
 
@@ -98,13 +94,12 @@ function displayRecentPage (data) {
         </div>
         `
         recentFeedList.appendChild(listItem)
-        console.log(recentFeedList)
     })
 }
 
 async function fetchData () {
     try {
-        const response = await fetch('../../data.json')
+        const response = await fetch('/data.json')
         const data = await response.json()
 
         handlePage(data)
@@ -120,13 +115,9 @@ function handlePage(data) {
     showToastError()
 
     if (pageContext === "home") {
-        console.log("changed")
         displayHomePage(data)
     } else if (pageContext === "recentPost") {
-        console.log("in recent")
         displayRecentPage(data)
-    } else {
-        console.log("Unknown page context")
     }
 }
 
@@ -149,7 +140,6 @@ function validateEmail () {
     const emailFields = document.querySelectorAll(".send-form input")
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     emailFields.forEach(item => {
-        console.log(item.value)
         if (!emailPattern.test(item.value)) {
             validationMessage.innerHTML = "Please enter a valid email"
             item.style.borderColor = "red"
@@ -178,7 +168,6 @@ function submitForm() {
             }, 1300);
             return false
         }
-        console.log(toastError, "error")
         toastError.classList.add('show-error')
         setTimeout(() => {
             toastError.classList.remove("show-error") 

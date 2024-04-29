@@ -1,5 +1,5 @@
 .about-hero-image {
-    background-image: url("../../assets/aboutMe.jpg");
+    background-image: url("/images/aboutMe.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

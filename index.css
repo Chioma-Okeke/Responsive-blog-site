@@ -365,7 +365,7 @@ hr {
 
 /* subscription form */
 #popup {
-    position: absolute;
+    position: fixed;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -499,6 +499,12 @@ hr {
 #toast-error.show-error {
     transform: translateX(100px);
     opacity: 1;
+}
+
+@media screen and (orientation: landscape) {
+    #popup {
+        position: absolute;
+    }
 }
 
 @media (max-width: 1002px) {

@@ -13,7 +13,7 @@ This mini project focuses on the creation of a responsive blog application. The 
 
 - From this project I have learnt a whole lot on how to make a page responsive. I have been able to understand the application of media queries.
 - I also have learn how to manipulate the DOM using pure JavaScript which is something I have been struggling with for a while.
-- Got to fully understand what a JSON file entails and how to creat one.
+- Got to fully understand what a JSON file entails and how to create one.
 
 ![image](https://github.com/Chioma-Okeke/Responsive-blog-site/assets/75180541/055b2400-b4bc-47c5-8bf6-7a7970e1eb7c)
     

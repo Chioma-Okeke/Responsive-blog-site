@@ -7,7 +7,7 @@ This mini project focuses on the creation of a responsive blog application. The 
 - HTML5
 - JavaScript
 - CSS3
-- Netlify
+- Netlify: For hosting of the application.
 
 ## Topics Learned
 
